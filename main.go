@@ -4,12 +4,25 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
 
+var logInCount int = 0
+
 func main() {
 	r := gin.Default() //create router variable
+
+	//logger
+	runningDir, _ := os.Getwd()
+	errorlogfile, _ := os.OpenFile(fmt.Sprintf("%s/gin_error.log", runningDir), os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600) //createdFile|ifAlreadyHasFile(FlagA+)|WriteOnly
+	accesslogfile, _ := os.OpenFile(fmt.Sprintf("%s/access.log", runningDir), os.O_CREATE|os.O_WRONLY, 0600)
+
+	//ผูกไฟล์ error กับ logger
+	gin.DefaultErrorWriter = errorlogfile
+	gin.DefaultWriter = accesslogfile
+	r.Use(gin.Logger())
 
 	r.GET("/", func(c *gin.Context) {
 		c.Data(http.StatusOK, "text/html; charset=uft-8", []byte("Root")) //(httpStatus,contentType,response)
@@ -20,12 +33,15 @@ func main() {
 	})
 	//query param http://localhost:85/login?username=hua&password=jai
 	r.GET("/login", func(c *gin.Context) {
+		logInCount += 1
+		accesslogfile.WriteString(fmt.Sprintf("login count : %d", logInCount))
 		username, password := c.Query("username"), c.Query("password")
 		c.JSON(http.StatusOK, gin.H{"result": "ok", "username": username, "password": password})
 	})
 
-	r.GET("/stringnumbers", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"result": "ok", "username": "1000.00"})
+	r.GET("/error", func(c *gin.Context) {
+		errorlogfile.WriteString(fmt.Sprintf("error : %s", "หล่อเกินไป"))
+		c.JSON(900, gin.H{"reason": "หล่อเกินไป"})
 	})
 
 	r.POST("/login", postLogin)
