@@ -1,0 +1,23 @@
+[GIN-debug] GET    /                         --> main.main.func2 (4 handlers)
+[GIN-debug] GET    /test                     --> main.main.func3 (4 handlers)
+[GIN-debug] GET    /login                    --> main.main.func4 (4 handlers)
+[GIN-debug] GET    /error                    --> main.main.func5 (4 handlers)
+[GIN-debug] POST   /login                    --> main.postLogin (4 handlers)
+[GIN-debug] GET    /fullName/:firstName/:lastName --> main.returnFullName (4 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :85
+::1 - [Tue, 16 May 2023 04:05:42 UTC] "GET /error HTTP/1.1 888 0s"PostmanRuntime/7.32.2" "
+.2" "
+::1 - [Tue, 16 May 2023 04:03:19 UTC] "GET /error HTTP/1.1 900 1.7305ms"PostmanRuntime/7.32.2" "
+::1 - [Tue, 16 May 2023 04:03:29 UTC] "GET /error HTTP/1.1 900 735.7µs"PostmanRuntime/7.32.2" "
+[GIN-debug] GET    /                         --> main.main.func2 (4 handlers)
+[GIN-debug] GET    /test                     --> main.main.func3 (4 handlers)
+[GIN-debug] GET    /login                    --> main.main.func4 (4 handlers)
+[GIN-debug] GET    /error                    --> main.main.func5 (4 handlers)
+[GIN-debug] POST   /login                    --> main.postLogin (4 handlers)
+[GIN-debug] GET    /fullName/:firstName/:lastName --> main.returnFullName (4 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :85
+::1 - [Thu, 18 May 2023 09:59:31 UTC] "POST /login HTTP/1.1 200 1.9993ms"Go-http-client/1.1" "

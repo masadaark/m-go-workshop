@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,12 +18,25 @@ func main() {
 	//logger
 	runningDir, _ := os.Getwd()
 	errorlogfile, _ := os.OpenFile(fmt.Sprintf("%s/gin_error.log", runningDir), os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600) //createdFile|ifAlreadyHasFile(FlagA+)|WriteOnly
-	accesslogfile, _ := os.OpenFile(fmt.Sprintf("%s/access.log", runningDir), os.O_CREATE|os.O_WRONLY, 0600)
+	accesslogfile, _ := os.OpenFile(fmt.Sprintf("%s/access.log", runningDir), os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600)
 
 	//ผูกไฟล์ error กับ logger
 	gin.DefaultErrorWriter = errorlogfile
 	gin.DefaultWriter = accesslogfile
-	r.Use(gin.Logger())
+	// r.Use(gin.Logger()) //standardLogger
+	r.Use(gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
+		return fmt.Sprintf("%s - [%s] \"%s %s %s %d %s\"%s\" %s\"\n",
+			param.ClientIP,
+			param.TimeStamp.Format(time.RFC1123),
+			param.Method,
+			param.Path,
+			param.Request.Proto,
+			param.StatusCode,
+			param.Latency,
+			param.Request.UserAgent(),
+			param.ErrorMessage,
+		)
+	}))
 
 	r.GET("/", func(c *gin.Context) {
 		c.Data(http.StatusOK, "text/html; charset=uft-8", []byte("Root")) //(httpStatus,contentType,response)
@@ -40,8 +54,8 @@ func main() {
 	})
 
 	r.GET("/error", func(c *gin.Context) {
-		errorlogfile.WriteString(fmt.Sprintf("error : %s", "หล่อเกินไป"))
-		c.JSON(900, gin.H{"reason": "หล่อเกินไป"})
+		errorlogfile.WriteString(fmt.Sprintf("\nerror : %s\n", "เว้นบรรทัด"))
+		c.JSON(888, gin.H{"reason": "หล่อเกินไป"})
 	})
 
 	r.POST("/login", postLogin)
