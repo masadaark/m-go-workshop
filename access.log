@@ -21,3 +21,16 @@ Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :85
 ::1 - [Thu, 18 May 2023 09:59:31 UTC] "POST /login HTTP/1.1 200 1.9993ms"Go-http-client/1.1" "
+[GIN-debug] GET    /                         --> main.main.func1 (4 handlers)
+[GIN-debug] GET    /test                     --> main.main.func2 (4 handlers)
+[GIN-debug] GET    /login                    --> main.main.func3 (4 handlers)
+[GIN-debug] GET    /error                    --> main.main.func4 (4 handlers)
+[GIN-debug] POST   /login                    --> main.postLogin (4 handlers)
+[GIN-debug] GET    /fullName/:firstName/:lastName --> main.returnFullName (4 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :85
+[GIN] 2023/05/20 - 18:56:39 |[97;42m 200 [0m|            0s |             ::1 |[97;44m GET     [0m "/"
+[GIN] 2023/05/20 - 18:56:39 |[90;43m 404 [0m|            0s |             ::1 |[97;44m GET     [0m "/favicon.ico"
+[GIN] 2023/05/20 - 18:57:26 |[90;43m 404 [0m|            0s |             ::1 |[97;44m GET     [0m "/tesyt"
+[GIN] 2023/05/20 - 18:57:31 |[97;42m 200 [0m|            0s |             ::1 |[97;44m GET     [0m "/test"

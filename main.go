@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,6 +14,9 @@ var logInCount int = 0
 func main() {
 	r := gin.Default() //create router variable
 
+	//control log output coloring
+	gin.DisableConsoleColor()
+	gin.ForceConsoleColor()
 	//logger
 	runningDir, _ := os.Getwd()
 	errorlogfile, _ := os.OpenFile(fmt.Sprintf("%s/gin_error.log", runningDir), os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600) //createdFile|ifAlreadyHasFile(FlagA+)|WriteOnly
@@ -24,7 +26,7 @@ func main() {
 	gin.DefaultErrorWriter = errorlogfile
 	gin.DefaultWriter = accesslogfile
 	// r.Use(gin.Logger()) //standardLogger
-	r.Use(gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
+	/*r.Use(gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
 		return fmt.Sprintf("%s - [%s] \"%s %s %s %d %s\"%s\" %s\"\n",
 			param.ClientIP,
 			param.TimeStamp.Format(time.RFC1123),
@@ -36,7 +38,8 @@ func main() {
 			param.Request.UserAgent(),
 			param.ErrorMessage,
 		)
-	}))
+	}))*/
+	r.Use(gin.LoggerWithWriter(gin.DefaultWriter, "/profile")) //hide this route in access log
 
 	r.GET("/", func(c *gin.Context) {
 		c.Data(http.StatusOK, "text/html; charset=uft-8", []byte("Root")) //(httpStatus,contentType,response)
@@ -45,7 +48,7 @@ func main() {
 	r.GET("/test", func(c *gin.Context) {
 		c.Data(200, "text/html; charset=uft-8", []byte("test"))
 	})
-	//query param http://localhost:85/login?username=hua&password=jai
+	//query param 5/login?username=hua&password=jai
 	r.GET("/login", func(c *gin.Context) {
 		logInCount += 1
 		accesslogfile.WriteString(fmt.Sprintf("login count : %d", logInCount))
