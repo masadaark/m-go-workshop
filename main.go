@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 )
@@ -109,10 +110,11 @@ func upLoadFile(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "No file uploaded"})
 		return
 	}
+	extension := filepath.Ext(file.Filename)
 
 	runningDir, _ := os.Getwd()
 
-	err = c.SaveUploadedFile(file, fmt.Sprintf("%s/upload/%s", runningDir, file.Filename))
+	err = c.SaveUploadedFile(file, fmt.Sprintf("%s/upload/%s%s", runningDir, file.Filename, extension))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": "Failed to save file"})
 		return
