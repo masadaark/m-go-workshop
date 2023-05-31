@@ -110,15 +110,17 @@ func upLoadFile(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "No file uploaded"})
 		return
 	}
+	userName := c.PostForm("userName")
+	token := c.PostForm("token")
 	extension := filepath.Ext(file.Filename)
 
 	runningDir, _ := os.Getwd()
 
-	err = c.SaveUploadedFile(file, fmt.Sprintf("%s/upload/%s%s", runningDir, file.Filename, extension))
+	err = c.SaveUploadedFile(file, fmt.Sprintf("%s/upload/%s/%s", runningDir, extension, file.Filename))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": "Failed to save file"})
 		return
 	}
 
-	c.String(http.StatusOK, fmt.Sprintf("'%s' uploaded", file.Filename))
+	c.String(http.StatusOK, fmt.Sprintf("[username:%s,token:%s] '%s' uploaded!", userName, token, file.Filename))
 }
