@@ -65,6 +65,11 @@ func main() {
 
 	r.GET("/fullName/:firstName/:lastName", returnFullName)
 
+	//Set lower Moemory limit for multipart forms (default is 32 MiB)
+	r.MaxMultipartMemory = 8 << 20 //8 MiB
+
+	r.POST("/upload", upLoadFile)
+
 	if err := r.Run(":85"); //run rounter (default port 8080)
 	err != nil {
 		log.Fatal(err)
@@ -95,4 +100,23 @@ func postLogin(c *gin.Context) {
 type LoginFrom struct {
 	Username string `form:"username" binding:"required"`
 	Password string `form:"password" binding:"required"`
+}
+
+func upLoadFile(c *gin.Context) {
+	// single File
+	file, err := c.FormFile("file")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": "No file uploaded"})
+		return
+	}
+
+	runningDir, _ := os.Getwd()
+
+	err = c.SaveUploadedFile(file, fmt.Sprintf("%s/upload/%s", runningDir, file.Filename))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": "Failed to save file"})
+		return
+	}
+
+	c.String(http.StatusOK, fmt.Sprintf("'%s' uploaded", file.Filename))
 }

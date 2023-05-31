@@ -34,3 +34,14 @@ Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-
 [GIN] 2023/05/20 - 18:56:39 |[90;43m 404 [0m|            0s |             ::1 |[97;44m GET     [0m "/favicon.ico"
 [GIN] 2023/05/20 - 18:57:26 |[90;43m 404 [0m|            0s |             ::1 |[97;44m GET     [0m "/tesyt"
 [GIN] 2023/05/20 - 18:57:31 |[97;42m 200 [0m|            0s |             ::1 |[97;44m GET     [0m "/test"
+[GIN-debug] GET    /                         --> main.main.func1 (4 handlers)
+[GIN-debug] GET    /test                     --> main.main.func2 (4 handlers)
+[GIN-debug] GET    /login                    --> main.main.func3 (4 handlers)
+[GIN-debug] GET    /error                    --> main.main.func4 (4 handlers)
+[GIN-debug] POST   /login                    --> main.postLogin (4 handlers)
+[GIN-debug] GET    /fullName/:firstName/:lastName --> main.returnFullName (4 handlers)
+[GIN-debug] POST   /upload                   --> main.upLoadFile (4 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :85
+[GIN] 2023/05/31 - 21:33:08 |[97;42m 200 [0m|      3.7327ms |             ::1 |[97;46m POST    [0m "/upload"
