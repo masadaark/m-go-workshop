@@ -9,10 +9,7 @@ import (
 func main() {
 	router := gin.Default()
 
-	authenApi := router.Group("/authen")
-	{
-		authenApi.GET("/login", api.Login)
-		authenApi.GET("/register", api.Register)
-	}
+	api.Setup(router)
+
 	router.Run(":899")
 }
