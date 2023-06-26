@@ -17,4 +17,15 @@ func Setup(rounter *gin.Engine) {
 		returnApi.GET("/someXML", SomeXML)
 		returnApi.GET("/someYAML", SomeYAML)
 	}
+
+	imageApi := rounter.Group("/image")
+	{
+		imageApi.GET("/jung", Jung)
+
+	}
+
+	publicApi := rounter.Group("/public")
+	{
+		publicApi.Static("/jung", "public")
+	}
 }
